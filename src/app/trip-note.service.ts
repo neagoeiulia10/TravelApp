@@ -14,7 +14,7 @@ export class TripNoteService {
       place: "Paris, France",
       dateFrom: new Date('2024-05-01'),
       dateTo: new Date('2024-05-10'),
-      description: "Vacation in Paris",
+      description: "Vacation in Parisss",
       imageUrl: "./assets/paris.jpg",
       rating: 5
     },
