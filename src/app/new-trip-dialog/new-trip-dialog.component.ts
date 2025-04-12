@@ -1,19 +1,19 @@
-import { Component, Inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { TripNote } from '../trip-note.model';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatIcon } from '@angular/material/icon';
+import { TripNote } from '../trip-note.model';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
-  standalone: true,
   selector: 'app-new-trip-dialog',
+  standalone: true,
   imports: [
     CommonModule,
     MatDialogModule,
@@ -21,118 +21,142 @@ import { MatIcon } from '@angular/material/icon';
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    ReactiveFormsModule,
     FormsModule,
-    MatSelectModule,
-    MatIcon,
+    MatButtonModule,
+    MatIconModule,
+    MatToolbarModule
   ],
-  providers: [provideNativeDateAdapter(), MatDatepickerModule,],
+  providers: [provideNativeDateAdapter()],
   template: `
-   <h1 mat-dialog-title>New Trip</h1>
-<div mat-dialog-content>
-  <form [formGroup]="tripForm">
-    <mat-form-field>
-      <mat-label>Place</mat-label>
-      <input matInput formControlName="place">
-      <mat-error *ngIf="tripForm.get('place')?.hasError('required')">
-        Place is required
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>From Date</mat-label>
-      <input matInput [matDatepicker]="picker1" formControlName="dateFrom">
-      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-      <mat-datepicker #picker1></mat-datepicker>
-      <mat-error *ngIf="tripForm.get('dateFrom')?.hasError('required')">
-        From Date is required
-      </mat-error>
-      <mat-error *ngIf="tripForm.get('dateFrom')?.hasError('invalidDate')">
-        Invalid date
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>To Date</mat-label>
-      <input matInput [matDatepicker]="picker2" formControlName="dateTo">
-      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-      <mat-datepicker #picker2></mat-datepicker>
-      <mat-error *ngIf="tripForm.get('dateTo')?.hasError('required')">
-        To Date is required
-      </mat-error>
-      <mat-error *ngIf="tripForm.get('dateTo')?.hasError('invalidDate')">
-        Invalid date
-      </mat-error>
-      <mat-error *ngIf="tripForm.hasError('dateRange')">
-        From Date should be earlier than To Date
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Description</mat-label>
-      <input matInput formControlName="description">
-      <mat-error *ngIf="tripForm.get('description')?.hasError('required')">
-        Description is required
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Image URL</mat-label>
-      <input matInput formControlName="imageUrl">
-      <mat-error *ngIf="tripForm.get('imageUrl')?.hasError('required')">
-        Image URL is required
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Rating</mat-label>
-      <mat-select formControlName="rating">
-        <mat-option *ngFor="let rating of [1, 2, 3, 4, 5]" [value]="rating">
-          {{ rating }}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="tripForm.get('rating')?.hasError('required')">
-        Rating is required
-      </mat-error>
-      <mat-error *ngIf="tripForm.get('rating')?.hasError('1') || tripForm.get('rating')?.hasError('5')">
-        Rating should be between 1 and 5
-      </mat-error>
-    </mat-form-field>
-  </form>
-</div>
-<div mat-dialog-actions>
-<button mat-fab id="add" type="button" (click)="onCancel()"><mat-icon>cancel</mat-icon></button>
-<button mat-fab id="save"  type ="button" [disabled]="!tripForm.valid" (click)="onSave()"><mat-icon>add</mat-icon></button>
-</div>
+    <div class="dialog-container">
+      <mat-toolbar>
+        <span>Add New Trip</span>
+        <span class="spacer"></span>
+        <button mat-icon-button (click)="onClose()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-toolbar>
+      
+      <div class="dialog-content">
+        <mat-form-field>
+          <mat-label>Place</mat-label>
+          <input matInput [(ngModel)]="newTrip.place" placeholder="Enter place name">
+        </mat-form-field>
+        
+        <mat-form-field>
+          <mat-label>Description</mat-label>
+          <textarea matInput [(ngModel)]="newTrip.description" placeholder="Enter trip description"></textarea>
+        </mat-form-field>
+        
+        <mat-form-field>
+          <mat-label>Start Date</mat-label>
+          <input matInput [matDatepicker]="picker1" [(ngModel)]="newTrip.dateFrom">
+          <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        
+        <mat-form-field>
+          <mat-label>End Date</mat-label>
+          <input matInput [matDatepicker]="picker2" [(ngModel)]="newTrip.dateTo">
+          <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+        
+        <mat-form-field>
+          <mat-label>Image URL</mat-label>
+          <input matInput [(ngModel)]="newTrip.imageUrl" placeholder="Enter image URL">
+        </mat-form-field>
+        
+        <div class="rating">
+          <h3>Rating</h3>
+          <div class="stars">
+            <mat-icon (click)="setRating(1)" [class.selected]="newTrip.rating >= 1">star</mat-icon>
+            <mat-icon (click)="setRating(2)" [class.selected]="newTrip.rating >= 2">star</mat-icon>
+            <mat-icon (click)="setRating(3)" [class.selected]="newTrip.rating >= 3">star</mat-icon>
+            <mat-icon (click)="setRating(4)" [class.selected]="newTrip.rating >= 4">star</mat-icon>
+            <mat-icon (click)="setRating(5)" [class.selected]="newTrip.rating >= 5">star</mat-icon>
+          </div>
+        </div>
+      </div>
+      
+      <div class="dialog-actions">
+        <button mat-button (click)="onClose()">Cancel</button>
+        <button mat-raised-button color="primary" (click)="onSave()">Save</button>
+      </div>
+    </div>
   `,
-  styleUrl: './new-trip-dialog.component.scss'
+  styles: [`
+    .dialog-container {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+    
+    .dialog-content {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .dialog-actions {
+      padding: 16px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    
+    .rating {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .stars {
+      display: flex;
+      gap: 4px;
+    }
+    
+    .stars mat-icon {
+      cursor: pointer;
+      color: #ccc;
+    }
+    
+    .stars mat-icon.selected {
+      color: #ffd700;
+    }
+    
+    .spacer {
+      flex: 1 1 auto;
+    }
+  `]
 })
 export class NewTripDialogComponent {
-  tripForm: FormGroup;
-  constructor(
-    private fb: FormBuilder,
-    public dialogRef: MatDialogRef<NewTripDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: TripNote) {
-    this.tripForm = this.fb.group({
-      place: [data.place,Validators.required],
-      dateFrom: [data.dateFrom, [Validators.required,this.dateValidator]],
-      dateTo: [data.dateTo, Validators.required],
-      description: [data.description, Validators.required],
-      imageUrl: [data.imageUrl, Validators.required],
-      rating: [data.rating, [Validators.required, Validators.min(1), Validators.max(5)]]},{validators:this.rangeValidator}
-    );
+  newTrip: TripNote = {
+    id: 0,
+    place: '',
+    description: '',
+    dateFrom: new Date(),
+    dateTo: new Date(),
+    imageUrl: '',
+    rating: 0,
+    isEditing: false
+  };
+  
+  @Output() save = new EventEmitter<TripNote>();
+  
+  constructor(private dialogRef: MatDialogRef<NewTripDialogComponent>) {}
+  
+  setRating(value: number): void {
+    this.newTrip.rating = value;
   }
-  dateValidator(control: AbstractControl): { [key: string]: any } | null {
-    const isValidDate = control.value && !isNaN(Date.parse(control.value));
-    return isValidDate ? null : { 'invalidDate': { value: control.value } };
-  }
-  rangeValidator(group: FormGroup): { [key: string]: any } | null {
-    const dateFrom = group.get('dateFrom')?.value;
-    const dateTo = group.get('dateTo')?.value;
-    return dateFrom && dateTo && new Date(dateFrom) <= new Date(dateTo) ? null : { 'dateRange': true };
-  }
-  onCancel(): void {
-    this.dialogRef.close();
-  }
-
+  
   onSave(): void {
-    if (this.tripForm.valid ) {
-      this.dialogRef.close(this.tripForm.value);
-    }
+    this.save.emit(this.newTrip);
+    this.dialogRef.close(this.newTrip);
+  }
+  
+  onClose(): void {
+    this.dialogRef.close();
   }
 }
