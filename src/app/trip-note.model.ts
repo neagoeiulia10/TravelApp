@@ -6,5 +6,5 @@ export interface TripNote{
     description: string;
     imageUrl:string
     rating: number;
-    isEditing?: boolean;
+    isEditing: boolean;
 }
