@@ -1,27 +1,74 @@
-# Travelapp
+# Travel App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.11.
+A full-stack travel application that allows users to manage their trip notes.
 
-## Development server
+## Project Structure
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+The project is divided into two main parts:
+- Frontend (Angular application)
+- Backend (Node.js/Express application)
 
-## Code scaffolding
+## Frontend
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+The frontend is an Angular application that provides the user interface for managing trip notes.
 
-## Build
+### Prerequisites
+- Node.js (v14 or higher)
+- Angular CLI
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Installation
+1. Navigate to the project root directory
+2. Install dependencies:
+```bash
+npm install
+```
 
-## Running unit tests
+### Running the Frontend
+```bash
+ng serve
+```
+The application will be available at `http://localhost:4200`
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Backend
 
-## Running end-to-end tests
+The backend is a Node.js/Express application that provides the API for the frontend.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Prerequisites
+- Node.js (v14 or higher)
+- MongoDB (if using a database)
 
-## Further help
+### Installation
+1. Navigate to the backend directory:
+```bash
+cd backend
+```
+2. Install dependencies:
+```bash
+npm install
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### Running the Backend
+```bash
+npm start
+```
+The API will be available at `http://localhost:3000`
+
+## Development
+
+To run both frontend and backend simultaneously for development:
+1. Open two terminal windows
+2. In the first terminal, run the frontend:
+```bash
+ng serve
+```
+3. In the second terminal, run the backend:
+```bash
+cd backend
+npm start
+```
+
+## Features
+- Create, read, update, and delete trip notes
+- Search and filter trip notes
+- Sort trip notes by various criteria
+- Responsive design

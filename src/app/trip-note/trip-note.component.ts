@@ -45,7 +45,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
       <mat-card-content>
         <mat-form-field>
           <mat-label>Start date</mat-label>
-          <input matInput [matDatepicker]="picker1" [(ngModel)]="tripNote.dateFrom" >
+          <input matInput [matDatepicker]="picker1" [(ngModel)]="tripNote.dateFrom"  readonly>
           <mat-hint>MM/DD/YYYY</mat-hint>
           <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
           <mat-datepicker #picker1 disabled="true"></mat-datepicker>
