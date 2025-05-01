@@ -25,7 +25,7 @@ npm install
 
 ### Running the Frontend
 ```bash
-ng serve
+npm run start/ ng serve
 ```
 The application will be available at `http://localhost:4200`
 
@@ -35,12 +35,12 @@ The backend is a Node.js/Express application that provides the API for the front
 
 ### Prerequisites
 - Node.js (v14 or higher)
-- MongoDB (if using a database)
+- SQLite (if using a database)
 
 ### Installation
 1. Navigate to the backend directory:
 ```bash
-cd backend
+cd Backend
 ```
 2. Install dependencies:
 ```bash
@@ -49,9 +49,9 @@ npm install
 
 ### Running the Backend
 ```bash
-npm start
+dotnet run
 ```
-The API will be available at `http://localhost:3000`
+The API will be available at `http://localhost:5001`
 
 ## Development
 
@@ -59,12 +59,13 @@ To run both frontend and backend simultaneously for development:
 1. Open two terminal windows
 2. In the first terminal, run the frontend:
 ```bash
-ng serve
+cd Frontend
+npm run start/ ng serve
 ```
 3. In the second terminal, run the backend:
 ```bash
-cd backend
-npm start
+cd Backend
+dotnet run
 ```
 
 ## Features
